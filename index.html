@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Bookmarklet Creator</title>
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/favicon/manifest.json">
+  <meta name="msapplication-config" content="favicon/browserconfig.xml">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.36.0/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.36.0/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.36.0/addon/hint/show-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.36.0/addon/hint/javascript-hint.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.36.0/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.36.0/addon/hint/show-hint.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.36.0/theme/monokai.min.css">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-red.min.css">
+  <style>
+    .container {
+      width: auto;
+      max-width: 600px;
+      margin: 50px auto 0;
+    }
+    .mdl-dialog {
+      width: 450px;
+    }
+    .material-icons {
+      color: red;
+    }
+  </style>
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+</head>
+<body>
+
+  <div class="mdl-card container">
+    <div class="mdl-cell mdl-cell--12-col mdl-shadow--2dp mdl-card__supporting-text">
+      <div class="mdl-cell mdl-cell--12-col">
+        <h1 class="mdl-typography--headline">
+            Bookmarklet Creator
+            <span class="icon material-icons">bookmark</span>
+        </h1>
+      </div>
+      <form>
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--12-col">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" name="name" id="name" value="say 'hello'">
+              <label class="mdl-textfield__label" for="name">name:</label>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col">
+            <p>code:</p>
+            <textarea name="source" id="source" cols="20" rows="8">alert('Hello world')</textarea>
+            <p><i>(drop bookmarklet in editor to edit)</i></p>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col">
+            <button id="create" class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect mdl-button--raised">Create bookmarklet</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <dialog class="mdl-dialog">
+    <h4 class="mdl-dialog__title">
+      <span class="mdl-typography--headline">Bookmarklet</span>
+    </h4>
+    <div class="mdl-dialog__content">
+      <div id="output-container">
+        <div class="output-bookmarklet-link">
+          <p>
+            Drag this link to your bookmarks: <a id="output-link" href="" class="bookmarklet-name mdl-badge" data-badge="📌"></a>
+          </p>
+        </div>
+        <div id="output-code-container">
+          <p>Here is the source:</p>
+          <textarea name="output-code" id="output-code" cols="20" rows="8">alert('Hello world')</textarea>
+        </div>
+      </div>
+    </div>
+    <div class="mdl-dialog__actions">
+      <button type="button" class="mdl-button close">Close</button>
+    </div>
+  </dialog>
+
+  <script src="js/bookmarklet.js"></script>
+
+  <a href="https://github.com/chimurai/bookmarklet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  <!-- Google Analytics -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    
+    ga('create', 'UA-16402617-2', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <!-- End Google Analytics -->
+
+</body>
+</html>
