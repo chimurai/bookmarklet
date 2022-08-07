@@ -3,8 +3,10 @@
 
   function init () {
     const { codeMirrorSource, codeMirrorOutput } = initEditors()
-    const dialog = document.querySelector('dialog')
 
+    persistentCodeMirror(codeMirrorSource);
+
+    const dialog = document.querySelector('dialog')
     dialog.querySelector('.close').addEventListener('click', () => dialog.close())
     document.getElementById('create').addEventListener('click', (e) => createBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog))
   }
@@ -65,4 +67,16 @@
 
     codeMirrorOutput.focus()
   }
+
+  function persistentCodeMirror(codeMirrorInstance) {
+    // persist sessionStorage
+    codeMirrorInstance.on('change', (instance, e) => {
+      window.sessionStorage.setItem('bookmarklet-source', instance.getValue());
+    })
+
+    // restore from sessionStorage
+    const persistedBookmarklet = window.sessionStorage.getItem('bookmarklet-source')
+    persistedBookmarklet && codeMirrorInstance.setValue(persistedBookmarklet)
+  }
+
 }())
