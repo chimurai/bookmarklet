@@ -5,6 +5,7 @@
     const { codeMirrorSource, codeMirrorOutput } = initEditors()
 
     persistentCodeMirror(codeMirrorSource);
+    loadPersistedBookMarklet()
 
     const dialog = document.querySelector('dialog')
     dialog.querySelector('.close').addEventListener('click', () => dialog.close())
@@ -12,8 +13,8 @@
   }
 
   const BOOKMARKLET = {
-    PRE: 'javascript:(function(){',
-    POST: '}())'
+    HEADER: 'javascript:(async function(){',
+    FOOTER: '})()'
   }
 
   function initEditors () {
@@ -33,10 +34,8 @@
     codeMirrorSource.on('drop', (instance, e) => {
       setTimeout(function () {
         const bookmarklet = instance.getSelection()
-        const decoded = decodeURI(bookmarklet).replace(BOOKMARKLET.PRE, '').replace(BOOKMARKLET.POST, '')
+        const decoded = decodeURI(bookmarklet).replace(BOOKMARKLET.HEADER, '').replace(BOOKMARKLET.FOOTER, '')
         instance.setValue(decoded)
-        console.log(e)
-        console.log(e.dataTransfer.files[0])
       })
     })
 
@@ -54,29 +53,59 @@
     e.preventDefault()
     const reStripComments = /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm
     const source = codeMirrorSource.getValue()
-    const bookmarklet = `${BOOKMARKLET.PRE}${source.replace(reStripComments, '$1')}${BOOKMARKLET.POST}`
+    const bookmarklet = `${BOOKMARKLET.HEADER}${source.replace(reStripComments, '$1')}${BOOKMARKLET.FOOTER}`
     const bookmarkletEncoded = encodeURI(bookmarklet)
 
     dialog.showModal()
 
     codeMirrorOutput.setValue(bookmarkletEncoded)
     document.getElementById('output-link').href = bookmarkletEncoded
-    Array.prototype.map.call(document.querySelectorAll('.bookmarklet-name'), (el) => {
-      el.innerHTML = document.getElementById('name').value
-    })
+    document.querySelector('.bookmarklet-name').innerHTML = document.getElementById('name').value;
 
-    codeMirrorOutput.focus()
   }
 
+  /**
+   * Persist the bookmarklet in sessionStorage, so it can be restored on page reload
+   */
   function persistentCodeMirror(codeMirrorInstance) {
     // persist sessionStorage
     codeMirrorInstance.on('change', (instance, e) => {
-      window.sessionStorage.setItem('bookmarklet-source', instance.getValue());
+      const bookmarklet = getBookMarklet();
+      window.sessionStorage.setItem('bookmarklet-name', bookmarklet.name);
+      window.sessionStorage.setItem('bookmarklet-code', bookmarklet.code);
     })
-
-    // restore from sessionStorage
-    const persistedBookmarklet = window.sessionStorage.getItem('bookmarklet-source')
-    persistedBookmarklet && codeMirrorInstance.setValue(persistedBookmarklet)
   }
 
-}())
+  /**
+   * Load the bookmarklet from sessionStorage
+   */
+  function loadPersistedBookMarklet() {
+    const persistedBookmarklet = {
+      name: window.sessionStorage.getItem('bookmarklet-name'),
+      code: window.sessionStorage.getItem('bookmarklet-code')
+    }
+    if (persistedBookmarklet.name && persistedBookmarklet.code) {
+      setBookMarklet(persistedBookmarklet)
+    }
+  }
+
+})();
+
+/**
+ * @returns {{name: string, code: string}}
+ */
+function getBookMarklet() {
+  return {
+    name: document.getElementById('name').value,
+    code: document.querySelector('.CodeMirror').CodeMirror.getValue()
+  }
+}
+
+/**
+ * 
+ * @param {{name: string, code: string}} bookmarklet 
+ */
+function setBookMarklet({name, code}) {
+  document.getElementById('name').value = name
+  document.querySelector('.CodeMirror').CodeMirror.setValue(code)
+}
