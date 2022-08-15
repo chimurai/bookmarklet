@@ -1,20 +1,21 @@
 (function () {
+  const BOOKMARKLET = {
+    HEADER: 'javascript:(async function(){',
+    FOOTER: '})()'
+  }
+
   init()
 
   function init () {
     const { codeMirrorSource, codeMirrorOutput } = initEditors()
 
-    persistentCodeMirror(codeMirrorSource);
+    codeMirrorSource.on('change', persistCodeMirrorOnChange) // persist to sessionStorage
+    codeMirrorSource.on('change', updateTryItButton) // update try it button
     loadPersistedBookMarklet()
 
     const dialog = document.querySelector('dialog')
     dialog.querySelector('.close').addEventListener('click', () => dialog.close())
     document.getElementById('create').addEventListener('click', (e) => createBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog))
-  }
-
-  const BOOKMARKLET = {
-    HEADER: 'javascript:(async function(){',
-    FOOTER: '})()'
   }
 
   function initEditors () {
@@ -51,10 +52,8 @@
 
   function createBookmarklet (e, codeMirrorSource, codeMirrorOutput, dialog) {
     e.preventDefault()
-    const reStripComments = /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm
-    const source = codeMirrorSource.getValue()
-    const bookmarklet = `${BOOKMARKLET.HEADER}${source.replace(reStripComments, '$1')}${BOOKMARKLET.FOOTER}`
-    const bookmarkletEncoded = encodeURI(bookmarklet)
+
+    const bookmarkletEncoded = createBookmarkletUri(codeMirrorSource.getValue())
 
     dialog.showModal()
 
@@ -64,16 +63,25 @@
 
   }
 
+  function createBookmarkletUri(sourceCode) {
+    const reStripComments = /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm
+    const bookmarklet = `${BOOKMARKLET.HEADER}${sourceCode.replace(reStripComments, '$1')}${BOOKMARKLET.FOOTER}`
+    const bookmarkletEncoded = encodeURI(bookmarklet)
+    return bookmarkletEncoded;
+  }
+
   /**
    * Persist the bookmarklet in sessionStorage, so it can be restored on page reload
    */
-  function persistentCodeMirror(codeMirrorInstance) {
-    // persist sessionStorage
-    codeMirrorInstance.on('change', (instance, e) => {
-      const bookmarklet = getBookMarklet();
-      window.sessionStorage.setItem('bookmarklet-name', bookmarklet.name);
-      window.sessionStorage.setItem('bookmarklet-code', bookmarklet.code);
-    })
+  function persistCodeMirrorOnChange(instance, e) {
+    const bookmarklet = getBookMarklet();
+    window.sessionStorage.setItem('bookmarklet-name', bookmarklet.name);
+    window.sessionStorage.setItem('bookmarklet-code', bookmarklet.code);
+  }
+
+  function updateTryItButton(instance, e) {
+    const bookMarkletUri = createBookmarkletUri(instance.getValue());
+    document.getElementById('try-it').onclick = () => window.location.href = bookMarkletUri;
   }
 
   /**
@@ -86,6 +94,9 @@
     }
     if (persistedBookmarklet.name && persistedBookmarklet.code) {
       setBookMarklet(persistedBookmarklet)
+    } else {
+      setBookMarklet({name: 'My Bookmarklet', code: `// your bookmarklet code
+alert('Hello world')`});
     }
   }
 

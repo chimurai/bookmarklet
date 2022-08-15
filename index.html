@@ -51,6 +51,9 @@
       padding: 7px 14px;
       border-radius: 10px;
     }
+    #try-it {
+      margin-right: 10px;
+    }
   </style>
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </head>
@@ -98,18 +101,23 @@
               <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col">
                   <!-- <p>code:</p> -->
-                  <textarea name="source" id="source" cols="20" rows="8">// your bookmarklet code
-alert('Hello world')</textarea>
+                  <textarea name="source" id="source" cols="20" rows="8"></textarea>
                   <p><i>(drop bookmarklet in editor to edit)</i></p>
                 </div>
                 <div class="mdl-cell mdl-cell--4-col">
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" name="name" id="name" value="My Bookmarklet">
+                    <input class="mdl-textfield__input" type="text" name="name" id="name">
                     <label class="mdl-textfield__label" for="name">Bookmark name:</label>
                   </div>
                 </div>
                 <div class="mdl-cell mdl-cell--4-col">
-                  <button id="create" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                  <button type="button" id="try-it" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                    <i class="material-icons">play_arrow</i>
+                  </button>
+                  <div class="mdl-tooltip" data-mdl-for="try-it">
+                    Try bookmarklet
+                  </div>
+                  <button type="button" id="create" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
                     <i class="material-icons">add</i>
                   </button>
                   <div class="mdl-tooltip" data-mdl-for="create">
