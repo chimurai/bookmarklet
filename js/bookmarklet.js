@@ -7,7 +7,15 @@
   init()
 
   function init () {
-    const { codeMirrorSource, codeMirrorOutput } = initEditors()
+    const { codeMirrorSource, codeMirrorOutput } = createEditors(window.CodeMirror)
+
+    codeMirrorSource.on('drop', (instance, e) => {
+      setTimeout(function () {
+        const bookmarklet = instance.getSelection()
+        const decoded = decodeURI(bookmarklet).replace(BOOKMARKLET.HEADER, '').replace(BOOKMARKLET.FOOTER, '')
+        instance.setValue(decoded)
+      })
+    });
 
     codeMirrorSource.on('change', persistCodeMirrorOnChange) // persist to sessionStorage
     codeMirrorSource.on('change', updateTryItButton) // update try it button
@@ -18,9 +26,7 @@
     document.getElementById('create').addEventListener('click', (e) => createBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog))
   }
 
-  function initEditors () {
-    const CodeMirror = window.CodeMirror
-
+  function createEditors (CodeMirror) {
     const codeMirrorSource = CodeMirror.fromTextArea(document.getElementById('source'), {
       autofocus: true,
       lineNumbers: true,
@@ -30,14 +36,6 @@
       mode: {name: 'javascript', globalVars: true},
       extraKeys: {'Ctrl-Space': 'autocomplete'},
       theme: 'monokai'
-    })
-
-    codeMirrorSource.on('drop', (instance, e) => {
-      setTimeout(function () {
-        const bookmarklet = instance.getSelection()
-        const decoded = decodeURI(bookmarklet).replace(BOOKMARKLET.HEADER, '').replace(BOOKMARKLET.FOOTER, '')
-        instance.setValue(decoded)
-      })
     })
 
     const codeMirrorOutput = CodeMirror.fromTextArea(document.getElementById('output-code'), {
