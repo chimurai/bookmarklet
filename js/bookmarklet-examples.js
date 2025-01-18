@@ -31,6 +31,7 @@ BOOKMARKLET_EXAMPLES.set('* background', {
 BOOKMARKLET_EXAMPLES.set('color-picker', {
   name: 'color picker',
   code: `const input = document.createElement("input");
+input.style="position:absolute; top:30%; left:40%; z-index:-1;"
 input.setAttribute("type","color");
 input.addEventListener("input", (e) => { navigator.clipboard.writeText(e.target.value) });
 input.addEventListener("change", (e) => {
@@ -38,8 +39,8 @@ input.addEventListener("change", (e) => {
   alert(\`Copied "\${e.target.value}" to clipboard\`);
   input.remove();
 });
-document.head.append(input);
-input.click();`,
+document.body.append(input);
+setTimeout(() => {input.click()}, 50)`,
 });
 
 
