@@ -39,7 +39,7 @@ input.addEventListener("change", (e) => {
   alert(\`Copied "\${e.target.value}" to clipboard\`);
   input.remove();
 });
-document.head.append(input);
+document.body.append(input);
 setTimeout(() => {input.click()}, 50)`,
 });
 
