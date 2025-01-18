@@ -34,9 +34,9 @@ BOOKMARKLET_EXAMPLES.set('color-picker', {
 input.setAttribute("type","color");
 input.addEventListener("input", (e) => { navigator.clipboard.writeText(e.target.value) });
 input.addEventListener("change", (e) => {
-  input.remove();
   navigator.clipboard.writeText(input.value);
   alert(\`Copied "${input.value}" to clipboard\`);
+  input.remove();
 });
 document.head.append(input);
 input.click();`,
