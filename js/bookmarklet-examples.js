@@ -30,10 +30,14 @@ BOOKMARKLET_EXAMPLES.set('* background', {
  */
 BOOKMARKLET_EXAMPLES.set('color-picker', {
   name: 'color picker',
-  code: `let input = document.createElement("input");
+  code: `const input = document.createElement("input");
 input.setAttribute("type","color");
 input.addEventListener("input", (e) => { navigator.clipboard.writeText(e.target.value) });
-input.addEventListener("change", (e) => { input.remove() });
+input.addEventListener("change", (e) => {
+  input.remove();
+  navigator.clipboard.writeText(input.value);
+  alert(\`Copied "${input.value}" to clipboard\`);
+});
 document.head.append(input);
 input.click();`,
 });
