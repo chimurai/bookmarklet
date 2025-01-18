@@ -40,7 +40,16 @@ input.addEventListener("change", (e) => {
   input.remove();
 });
 document.body.append(input);
-setTimeout(() => {input.click()}, 50)`,
+setTimeout(() => {input.click()}, 50)
+
+const cleanUp = ({target}) => {
+  if (input !== target) {
+    input.remove();
+    document.removeEventListener('click', cleanUp);
+  }
+}
+
+document.addEventListener('click', cleanUp);`,
 });
 
 
