@@ -94,5 +94,5 @@ BOOKMARKLET_EXAMPLES.set('Kick Ass', {
   })
 }
 
-injectScript('https://hi.kickassapp.com/kickass.js');`
+await injectScript('https://hi.kickassapp.com/kickass.js');`
 });
