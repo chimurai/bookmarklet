@@ -1,184 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Bookmarklet Creator - A simple web tool to convert JavaScript and generate a bookmarklet. Supports modern top-level async/await syntax. With examples to inject external dependencies like jQuery.">
-  <title>Bookmarklet Creator - Make JavaScript Bookmarklets effortlessly</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Bookmarklet Creator - A simple web tool to convert JavaScript and generate a bookmarklet. Supports modern top-level async/await syntax. With examples to inject external dependencies like jQuery."
+    />
+    <title>Bookmarklet Creator - Make JavaScript Bookmarklets effortlessly</title>
 
-  <link rel="apple-touch-icon" sizes="57x57" href="./favicon/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="./favicon/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="./favicon/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="./favicon/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="./favicon/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="./favicon/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="./favicon/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="./favicon/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192"  href="./favicon/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="./favicon/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
-  <link rel="manifest" href="./favicon/manifest.json">
-  <meta name="msapplication-config" content="./favicon/browserconfig.xml">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="./favicon/ms-icon-144x144.png">
-  <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" sizes="57x57" href="./favicon/apple-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="./favicon/apple-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="./favicon/apple-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="./favicon/apple-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="./favicon/apple-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="./favicon/apple-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="./favicon/apple-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="./favicon/apple-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-icon-180x180.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./favicon/android-icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="./favicon/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png" />
+    <link rel="manifest" href="./favicon/manifest.json" />
+    <meta name="msapplication-config" content="./favicon/browserconfig.xml" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="msapplication-TileImage" content="./favicon/ms-icon-144x144.png" />
+    <meta name="theme-color" content="#ffffff" />
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/javascript-hint.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/javascript-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css" />
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-red.min.css">
-  <style>
-    textarea#source ~ .CodeMirror {
-      height: 450px;
-    }
-    .container {
-      width: auto;
-      margin: 20px 55px 0;
-    }
-    .mdl-dialog {
-      width: 600px;
-    }
-    #output-link {
-      display: inline-block;
-      padding: 7px 14px;
-      border-radius: 10px;
-    }
-    .button-bar button {
-      margin-right: 10px;
-    }
-  </style>
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-</head>
-<body>
-  <div class="mdl-layout__container">
-    <div class="mdl-layout mdl-layout--fixed-header mdl-js-layout">
-      <header class="mdl-layout__header is-casting-shadow">
-        <div class="mdl-layout__header-row">
-          <h1 class="mdl-layout-title">Bookmarklet Creator</h1>
-        </div>
-      </header>
-      <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">Examples</span>
-        <nav class="mdl-navigation">
-          <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('design-mode'); void(0);">
-            <span class="material-icons">edit</span>
-            designMode
-          </a>
-          <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('color-picker'); void(0);">
-            <span class="material-icons">colorize</span>
-            color picker
-          </a>
-          <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('* background'); void(0);">
-            <span class="material-icons">layers</span>
-            * background
-          </a>
-          <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('wayback-machine'); void(0);">
-            <span class="material-icons">history</span>
-            Wayback Machine
-          </a>
-          <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('jQuery'); void(0);">
-            <span class="material-icons">code</span>
-            inject jQuery
-          </a>
-          <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('Kick Ass'); void(0);">
-            <span class="material-icons">rocket_launch</span>
-            Kick Ass
-          </a>
-        </nav>
-      </div>    
-      <main class="mdl-layout__content mdl-color--grey-100">
-        <div class="mdl-card container mdl-color--white mdl-shadow--2dp">
-          <div class="mdl-cell mdl-cell--12-col">
-            <form>
-              <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--12-col">
-                  <!-- <p>code:</p> -->
-                  <textarea name="source" id="source" cols="80" rows="30"></textarea>
-                  <p><i>(drop bookmarklet in editor to edit)</i></p>
-                </div>
-                <div class="mdl-cell mdl-cell--4-col">
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" name="name" id="name">
-                    <label class="mdl-textfield__label" for="name">Bookmark name:</label>
-                  </div>
-                </div>
-                <div class="mdl-cell mdl-cell--4-col button-bar">
-                  <button type="button" id="try-it" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
-                    <i class="material-icons">play_arrow</i>
-                  </button>
-                  <div class="mdl-tooltip" data-mdl-for="try-it">
-                    Try bookmarklet
-                  </div>
-                  <button type="button" id="create" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
-                    <i class="material-icons">add</i>
-                  </button>
-                  <div class="mdl-tooltip" data-mdl-for="create">
-                    Create bookmarklet
-                  </div>
-                  <button type="button" id="share" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
-                    <i class="material-icons">share</i>
-                  </button>
-                  <div class="mdl-tooltip" data-mdl-for="share">
-                    Share bookmarklet
-                  </div>
-                </div>
-              </div>
-            </form>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-red.min.css" />
+    <style>
+      textarea#source ~ .CodeMirror {
+        height: 450px;
+      }
+      .container {
+        width: auto;
+        margin: 20px 55px 0;
+      }
+      .mdl-dialog {
+        width: 600px;
+      }
+      #output-link {
+        display: inline-block;
+        padding: 7px 14px;
+        border-radius: 10px;
+      }
+      .button-bar button {
+        margin-right: 10px;
+      }
+    </style>
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </head>
+  <body>
+    <div class="mdl-layout__container">
+      <div class="mdl-layout mdl-layout--fixed-header mdl-js-layout">
+        <header class="mdl-layout__header is-casting-shadow">
+          <div class="mdl-layout__header-row">
+            <h1 class="mdl-layout-title">Bookmarklet Creator</h1>
           </div>
+        </header>
+        <div class="mdl-layout__drawer">
+          <span class="mdl-layout-title">Examples</span>
+          <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('design-mode'); void(0);">
+              <span class="material-icons">edit</span>
+              designMode
+            </a>
+            <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('color-picker'); void(0);">
+              <span class="material-icons">colorize</span>
+              color picker
+            </a>
+            <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('* background'); void(0);">
+              <span class="material-icons">layers</span>
+              * background
+            </a>
+            <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('wayback-machine'); void(0);">
+              <span class="material-icons">history</span>
+              Wayback Machine
+            </a>
+            <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('jQuery'); void(0);">
+              <span class="material-icons">code</span>
+              inject jQuery
+            </a>
+            <a class="mdl-navigation__link" href="javascript:loadBookMarkletExample('Kick Ass'); void(0);">
+              <span class="material-icons">rocket_launch</span>
+              Kick Ass
+            </a>
+          </nav>
         </div>
-      </main>
-    </div>
-  </div>
-
-
-  <dialog class="mdl-dialog">
-    <h4 class="mdl-dialog__title">
-      <span class="mdl-typography--headline">Bookmarklet</span>
-    </h4>
-    <div class="mdl-dialog__content">
-      <div id="output-container">
-        <div class="output-bookmarklet-link">
-          <p>
-            Drag this link to your bookmarks:
-            <a id="output-link" href="" class="bookmarklet-name mdl-color--primary mdl-color-text--accent-contrast"></a>
-            <span class="material-icons mdl-color-text--accent">open_in_browser</span>
-          </p>
-        </div>
-        <div id="output-code-container">
-          <p>Here is the source:</p>
-          <textarea name="output-code" id="output-code" cols="20" rows="8">alert('Hello world')</textarea>
-        </div>
+        <main class="mdl-layout__content mdl-color--grey-100">
+          <div class="mdl-card container mdl-color--white mdl-shadow--2dp">
+            <div class="mdl-cell mdl-cell--12-col">
+              <form>
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--12-col">
+                    <!-- <p>code:</p> -->
+                    <textarea name="source" id="source" cols="80" rows="30"></textarea>
+                    <p><i>(drop bookmarklet in editor to edit)</i></p>
+                  </div>
+                  <div class="mdl-cell mdl-cell--4-col">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" name="name" id="name" />
+                      <label class="mdl-textfield__label" for="name">Bookmark name:</label>
+                    </div>
+                  </div>
+                  <div class="mdl-cell mdl-cell--4-col button-bar">
+                    <button type="button" id="try-it" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                      <i class="material-icons">play_arrow</i>
+                    </button>
+                    <div class="mdl-tooltip" data-mdl-for="try-it">Try bookmarklet</div>
+                    <button type="button" id="create" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                      <i class="material-icons">add</i>
+                    </button>
+                    <div class="mdl-tooltip" data-mdl-for="create">Create bookmarklet</div>
+                    <button type="button" id="share" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                      <i class="material-icons">share</i>
+                    </button>
+                    <div class="mdl-tooltip" data-mdl-for="share">Share bookmarklet</div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
-    <div class="mdl-dialog__actions">
-      <button type="button" class="mdl-button close">Close</button>
-    </div>
-  </dialog>
 
-  <script src="js/bookmarklet.js" defer></script>
-  <script src="js/bookmarklet-examples.js" defer></script>
+    <dialog class="mdl-dialog">
+      <h4 class="mdl-dialog__title">
+        <span class="mdl-typography--headline">Bookmarklet</span>
+      </h4>
+      <div class="mdl-dialog__content">
+        <div id="output-container">
+          <div class="output-bookmarklet-link">
+            <p>
+              Drag this link to your bookmarks:
+              <a id="output-link" href="" class="bookmarklet-name mdl-color--primary mdl-color-text--accent-contrast"></a>
+              <span class="material-icons mdl-color-text--accent">open_in_browser</span>
+            </p>
+          </div>
+          <div id="output-code-container">
+            <p>Here is the source:</p>
+            <textarea name="output-code" id="output-code" cols="20" rows="8">alert('Hello world')</textarea>
+          </div>
+        </div>
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button close">Close</button>
+      </div>
+    </dialog>
 
-  <a href="https://github.com/chimurai/bookmarklet" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 100;" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" alt="Fork me on GitHub"></a>
+    <script src="js/bookmarklet.js" defer></script>
+    <script src="js/bookmarklet-examples.js" defer></script>
 
-  <!-- Google Analytics -->
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    
-    ga('create', 'UA-16402617-2', 'auto');
-    ga('send', 'pageview');
-  </script>
-  <!-- End Google Analytics -->
+    <a href="https://github.com/chimurai/bookmarklet" target="_blank" rel="noopener noreferrer"></a>
+      <img
+        style="position: absolute; top: 0; right: 0; border: 0; z-index: 100"
+        src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149"
+        alt="Fork me on GitHub"
+      />
+    </a>
 
-</body>
+    <!-- Google Analytics -->
+    <script>
+      // prettier-ignore
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-16402617-2', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <!-- End Google Analytics -->
+  </body>
 </html>

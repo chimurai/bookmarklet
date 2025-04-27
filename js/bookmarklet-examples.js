@@ -52,7 +52,6 @@ const cleanUp = ({target}) => {
 document.addEventListener('click', cleanUp);`,
 });
 
-
 BOOKMARKLET_EXAMPLES.set('wayback-machine', {
   name: 'Wayback Machine',
   code: `window.open('https://web.archive.org/web/*/' + window.location.href)`,
@@ -94,5 +93,5 @@ BOOKMARKLET_EXAMPLES.set('Kick Ass', {
   })
 }
 
-await injectScript('https://hi.kickassapp.com/kickass.js');`
+await injectScript('https://hi.kickassapp.com/kickass.js');`,
 });
