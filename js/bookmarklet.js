@@ -148,8 +148,9 @@
       setBookMarklet(persistedBookmarklet)
     } else {
       setBookMarklet({
-        name: 'My Bookmarklet', code: `// your bookmarklet code
-alert('Hello world')`});
+        name: 'My Bookmarklet', code: `alert('Hello world'); // your bookmarklet code
+
+// drop and drop existing bookmarklet to edit`});
     }
   }
 
