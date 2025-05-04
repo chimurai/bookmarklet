@@ -1,4 +1,30 @@
 (function () {
+  class EditorFactory {
+    #CodeMirror = globalThis.CodeMirror;
+
+    createEditor(textAreaId) {
+      return this.#CodeMirror.fromTextArea(document.getElementById(textAreaId), {
+        autofocus: true,
+        lineNumbers: true,
+        indentUnit: 2,
+        tabSize: 2,
+        indentWithTabs: false,
+        mode: { name: 'javascript', globalVars: true },
+        extraKeys: { 'Ctrl-Space': 'autocomplete' },
+        theme: 'monokai',
+      });
+    }
+
+    createReadOnlyEditor(textAreaId) {
+      return this.#CodeMirror.fromTextArea(document.getElementById(textAreaId), {
+        mode: { name: 'javascript', globalVars: true },
+        lineWrapping: true,
+        readOnly: true,
+        theme: 'default',
+      });
+    }
+  }
+
   const BOOKMARKLET = {
     HEADER: 'javascript:(async function(){',
     FOOTER: '})()',
@@ -10,7 +36,9 @@
   init();
 
   function init() {
-    const { codeMirrorSource, codeMirrorOutput } = createEditors(window.CodeMirror);
+    const editorFactory = new EditorFactory();
+    const codeMirrorSource = editorFactory.createEditor('source');
+    const codeMirrorOutput = editorFactory.createReadOnlyEditor('output-code');
 
     codeMirrorSource.on('drop', (instance, e) => {
       setTimeout(function () {
@@ -45,28 +73,6 @@
     dialog.querySelector('.close').addEventListener('click', () => dialog.close());
     document.getElementById('create').addEventListener('click', (e) => createBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog));
     document.getElementById('share').addEventListener('click', (e) => shareBookmarklet(e, codeMirrorSource, codeMirrorOutput));
-  }
-
-  function createEditors(CodeMirror) {
-    const codeMirrorSource = CodeMirror.fromTextArea(document.getElementById('source'), {
-      autofocus: true,
-      lineNumbers: true,
-      indentUnit: 2,
-      tabSize: 2,
-      indentWithTabs: false,
-      mode: { name: 'javascript', globalVars: true },
-      extraKeys: { 'Ctrl-Space': 'autocomplete' },
-      theme: 'monokai',
-    });
-
-    const codeMirrorOutput = CodeMirror.fromTextArea(document.getElementById('output-code'), {
-      mode: { name: 'javascript', globalVars: true },
-      lineWrapping: true,
-      readOnly: true,
-      theme: 'default',
-    });
-
-    return { codeMirrorSource, codeMirrorOutput };
   }
 
   function createBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog) {
