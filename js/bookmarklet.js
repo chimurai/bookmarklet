@@ -1,4 +1,11 @@
+// @ts-check
 (function () {
+  /**
+   * @typedef BookmarkletData
+   * @prop {string} name Bookmarklet name
+   * @prop {string} code Bookmarklet code
+   */
+
   class EditorFactory {
     #CodeMirror = globalThis.CodeMirror;
 
@@ -41,8 +48,57 @@
     }
   }
 
-  /** Prefix used in URL hash. Example: https://chimurai.github.io/bookmarklet/#/data=... */
-  const LOCATION_HASH_PREFIX = '/data=';
+  class BookmarkletUrlHash {
+    /** Prefix used in URL hash. Example: https://chimurai.github.io/bookmarklet/#/data=... */
+    static #LOCATION_HASH_PREFIX = '/data=';
+
+    static hasUrlHashBookmarklet() {
+      return document.location.hash.includes(this.#LOCATION_HASH_PREFIX);
+    }
+
+    static fromUrlHash() {
+      const hash = document.location.hash;
+      const base64 = hash.replace(`#${this.#LOCATION_HASH_PREFIX}`, '');
+      const data = this.decodeBase64(base64);
+      return data;
+    }
+
+    /**
+     * @param {BookmarkletData} data
+     */
+    static toUrlHash(data) {
+      const base64 = this.encodeBase64(data);
+      document.location.hash = `${this.#LOCATION_HASH_PREFIX}${base64}`;
+    }
+
+    /**
+     * @param {BookmarkletData} data
+     * @return {string} base64 encoded string
+     */
+    static encodeBase64(data) {
+      const str = JSON.stringify(data);
+
+      // fix: InvalidCharacterError: Failed to execute 'btoa' on 'Window': The string to be encoded contains characters outside of the Latin1 range
+      // when emoji's are used for example.
+      const encoder = new TextEncoder();
+      const bytes = encoder.encode(str); // UTF-8 bytes
+      const binaryStr = String.fromCharCode(...bytes);
+
+      return btoa(binaryStr);
+    }
+
+    /**
+     * @param {string} b64 base64 encoded string
+     * @return {BookmarkletData} decoded data
+     */
+    static decodeBase64(b64) {
+      const binaryStr = atob(b64);
+      const bytes = Uint8Array.from(binaryStr, (c) => c.charCodeAt(0));
+      const string = new TextDecoder().decode(bytes);
+
+      return JSON.parse(string);
+    }
+  }
 
   init();
 
@@ -62,13 +118,10 @@
     codeMirrorSource.on('change', persistCodeMirrorOnChange); // persist to sessionStorage
     codeMirrorSource.on('change', updateTryItButton); // update try it button
 
-    if (document.location.hash.includes(LOCATION_HASH_PREFIX)) {
+    if (BookmarkletUrlHash.hasUrlHashBookmarklet()) {
       // try to parse shared bookmarklet from url hash
       try {
-        const hash = document.location.hash;
-        const base64 = hash.replace(`#${LOCATION_HASH_PREFIX}`, '');
-        const data = shareDecode(base64);
-        const { name, code } = data;
+        const { name, code } = BookmarkletUrlHash.fromUrlHash();
         setBookMarklet({ name, code });
         setTimeout(() => document.getElementById('create').click());
       } catch (err) {
@@ -100,35 +153,16 @@
 
   async function shareBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog) {
     e.preventDefault();
+    /** @type {BookmarkletData} */
     const data = {
       name: document.getElementById('name').value,
       code: codeMirrorSource.getValue(),
     };
 
-    document.location.hash = `${LOCATION_HASH_PREFIX}${shareEncode(data)}`;
+    BookmarkletUrlHash.toUrlHash(data);
 
     await navigator.clipboard.writeText(document.location);
     alert('URL copied to clipboard');
-  }
-
-  function shareEncode(data) {
-    const str = JSON.stringify(data);
-
-    // fix: InvalidCharacterError: Failed to execute 'btoa' on 'Window': The string to be encoded contains characters outside of the Latin1 range
-    // when emoji's are used for example.
-    const encoder = new TextEncoder();
-    const bytes = encoder.encode(str); // UTF-8 bytes
-    const binaryStr = String.fromCharCode(...bytes);
-
-    return btoa(binaryStr);
-  }
-
-  function shareDecode(b64) {
-    const binaryStr = atob(b64);
-    const bytes = Uint8Array.from(binaryStr, (c) => c.charCodeAt(0));
-    const string = new TextDecoder().decode(bytes);
-
-    return JSON.parse(string);
   }
 
   /**
@@ -149,6 +183,7 @@
    * Load the bookmarklet from sessionStorage
    */
   function loadPersistedBookMarklet() {
+    /** @type {BookmarkletData} */
     const persistedBookmarklet = {
       name: window.sessionStorage.getItem('bookmarklet-name'),
       code: window.sessionStorage.getItem('bookmarklet-code'),
@@ -164,22 +199,22 @@
       });
     }
   }
+
+  /**
+   * @returns {BookmarkletData}
+   */
+  function getBookMarklet() {
+    return {
+      name: document.getElementById('name').value,
+      code: document.querySelector('.CodeMirror').CodeMirror.getValue(),
+    };
+  }
+
+  /**
+   * @param {BookmarkletData} data
+   */
+  function setBookMarklet({ name, code }) {
+    document.getElementById('name').value = name;
+    document.querySelector('.CodeMirror').CodeMirror.setValue(code);
+  }
 })();
-
-/**
- * @returns {{name: string, code: string}}
- */
-function getBookMarklet() {
-  return {
-    name: document.getElementById('name').value,
-    code: document.querySelector('.CodeMirror').CodeMirror.getValue(),
-  };
-}
-
-/**
- * @param {{name: string, code: string}} bookmarklet
- */
-function setBookMarklet({ name, code }) {
-  document.getElementById('name').value = name;
-  document.querySelector('.CodeMirror').CodeMirror.setValue(code);
-}
