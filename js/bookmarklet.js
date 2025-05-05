@@ -25,10 +25,21 @@
     }
   }
 
-  const BOOKMARKLET = {
-    HEADER: 'javascript:(async function(){',
-    FOOTER: '})()',
-  };
+  class Bookmarklet {
+    static #BOOKMARKLET = {
+      HEADER: 'javascript:(async function(){',
+      FOOTER: '})()',
+    };
+
+    static toSource(bookmarklet) {
+      return decodeURI(bookmarklet).replace(this.#BOOKMARKLET.HEADER, '').replace(this.#BOOKMARKLET.FOOTER, '');
+    }
+    static toBookmarklet(sourceCode) {
+      const reStripComments = /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm;
+      const code = `${this.#BOOKMARKLET.HEADER}${sourceCode.replace(reStripComments, '$1')}${this.#BOOKMARKLET.FOOTER}`;
+      return encodeURI(code);
+    }
+  }
 
   /** Prefix used in URL hash. Example: https://chimurai.github.io/bookmarklet/#/data=... */
   const LOCATION_HASH_PREFIX = '/data=';
@@ -43,7 +54,7 @@
     codeMirrorSource.on('drop', (instance, e) => {
       setTimeout(function () {
         const bookmarklet = instance.getSelection();
-        const decoded = decodeURI(bookmarklet).replace(BOOKMARKLET.HEADER, '').replace(BOOKMARKLET.FOOTER, '');
+        const decoded = Bookmarklet.toSource(bookmarklet);
         instance.setValue(decoded);
       });
     });
@@ -78,20 +89,13 @@
   function createBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog) {
     e.preventDefault();
 
-    const bookmarkletEncoded = createBookmarkletUri(codeMirrorSource.getValue());
+    const bookmarkletEncoded = Bookmarklet.toBookmarklet(codeMirrorSource.getValue());
 
     dialog.showModal();
 
     codeMirrorOutput.setValue(bookmarkletEncoded);
     document.getElementById('output-link').href = bookmarkletEncoded;
     document.querySelector('.bookmarklet-name').innerHTML = document.getElementById('name').value;
-  }
-
-  function createBookmarkletUri(sourceCode) {
-    const reStripComments = /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm;
-    const bookmarklet = `${BOOKMARKLET.HEADER}${sourceCode.replace(reStripComments, '$1')}${BOOKMARKLET.FOOTER}`;
-    const bookmarkletEncoded = encodeURI(bookmarklet);
-    return bookmarkletEncoded;
   }
 
   async function shareBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog) {
@@ -137,7 +141,7 @@
   }
 
   function updateTryItButton(instance, e) {
-    const bookMarkletUri = createBookmarkletUri(instance.getValue());
+    const bookMarkletUri = Bookmarklet.toBookmarklet(instance.getValue());
     document.getElementById('try-it').onclick = () => (window.location.href = bookMarkletUri);
   }
 
