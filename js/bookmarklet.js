@@ -123,7 +123,7 @@
       try {
         const { name, code } = BookmarkletUrlHash.fromUrlHash();
         setBookMarklet({ name, code });
-        setTimeout(() => document.getElementById('create').click());
+        setTimeout(() => document.getElementById('create')?.click());
       } catch (err) {
         // ignore errors
       } finally {
@@ -134,9 +134,9 @@
     }
 
     const dialog = document.querySelector('dialog');
-    dialog.querySelector('.close').addEventListener('click', () => dialog.close());
-    document.getElementById('create').addEventListener('click', (e) => createBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog));
-    document.getElementById('share').addEventListener('click', (e) => shareBookmarklet(e, codeMirrorSource, codeMirrorOutput));
+    dialog?.querySelector('.close')?.addEventListener('click', () => dialog.close());
+    document.getElementById('create')?.addEventListener('click', (e) => createBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog));
+    document.getElementById('share')?.addEventListener('click', (e) => shareBookmarklet(e, codeMirrorSource, codeMirrorOutput));
   }
 
   function createBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog) {
@@ -148,7 +148,7 @@
 
     codeMirrorOutput.setValue(bookmarkletEncoded);
     document.getElementById('output-link').href = bookmarkletEncoded;
-    document.querySelector('.bookmarklet-name').innerHTML = document.getElementById('name').value;
+    document.querySelector('.bookmarklet-name').innerHTML = document.getElementById('name')?.value;
   }
 
   async function shareBookmarklet(e, codeMirrorSource, codeMirrorOutput, dialog) {
@@ -161,7 +161,7 @@
 
     BookmarkletUrlHash.toUrlHash(data);
 
-    await navigator.clipboard.writeText(document.location);
+    await navigator.clipboard.writeText(document.location.href);
     alert('URL copied to clipboard');
   }
 
@@ -185,8 +185,8 @@
   function loadPersistedBookMarklet() {
     /** @type {BookmarkletData} */
     const persistedBookmarklet = {
-      name: window.sessionStorage.getItem('bookmarklet-name'),
-      code: window.sessionStorage.getItem('bookmarklet-code'),
+      name: window.sessionStorage.getItem('bookmarklet-name') || '',
+      code: window.sessionStorage.getItem('bookmarklet-code') || '',
     };
     if (persistedBookmarklet.name && persistedBookmarklet.code) {
       setBookMarklet(persistedBookmarklet);
