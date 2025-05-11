@@ -217,4 +217,7 @@
     document.getElementById('name').value = name;
     document.querySelector('.CodeMirror').CodeMirror.setValue(code);
   }
+
+  // expose functions to global scope for hamburger menu with bookmarklet examples
+  window.setBookMarklet = setBookMarklet;
 })();
