@@ -26,6 +26,15 @@ BOOKMARKLET_EXAMPLES.set('* background', {
 });
 
 /**
+ * Import confetti from https://esm.sh
+ */
+BOOKMARKLET_EXAMPLES.set('* background', {
+  name: 'confetti',
+  code: `globalThis.confetti ??= await import("https://esm.sh/canvas-confetti@1.6.0");
+confetti.default()`,
+});
+
+/**
  * https://css-tricks.com/web-development-bookmarklets/#color-widget-bookmark
  */
 BOOKMARKLET_EXAMPLES.set('color-picker', {
