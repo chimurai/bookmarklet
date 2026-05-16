@@ -28,7 +28,7 @@ BOOKMARKLET_EXAMPLES.set('* background', {
 /**
  * Import confetti from https://esm.sh
  */
-BOOKMARKLET_EXAMPLES.set('* background', {
+BOOKMARKLET_EXAMPLES.set('confetti', {
   name: 'confetti',
   code: `globalThis.confetti ??= await import("https://esm.sh/canvas-confetti@1.6.0");
 confetti.default()`,
